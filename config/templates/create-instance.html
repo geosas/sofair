@@ -1,0 +1,147 @@
+{% include "header.html" %}
+
+  <section class="section is-title-bar">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <ul>
+            <li>Admin</li>
+            <li>Création d'une instance SensorThings</li>
+          </ul>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <div class="buttons is-right">
+            <a href="https://github.com/vikdiesel/admin-one-bulma-dashboard" target="_blank" class="button is-primary">
+              <span class="icon"><i class="mdi mdi-github-circle"></i></span>
+              <span>GitHub</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hero is-hero-bar">
+    <div class="hero-body">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item"><h1 class="title">
+            Création
+          </h1></div>
+        </div>
+        <div class="level-right" style="display: none;">
+          <div class="level-item"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section is-main-section">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon"><i class="mdi mdi-ballot"></i></span>
+          Création
+        </p>
+      </header>
+      <div class="card-content">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Créateur</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <input id="STAAuthor" class="input" type="text" placeholder="Name">
+                  <span class="icon is-small is-left"><i class="mdi mdi-account"></i></span>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control is-expanded has-icons-left has-icons-right">
+                  <input id="STAEmail" class="input is-success" type="email" placeholder="Email" >
+                  <span class="icon is-small is-left"><i class="mdi mdi-mail"></i></span>
+                  <span class="icon is-small is-right"><i class="mdi mdi-check"></i></span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Service API</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="APIService" onChange='APIServiceChange();'>
+                      {% for i in baseAPIServices: %}
+                      <option value="{{i}}">{{i.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+		    <label id="APIServiceUrl" class="label">{{baseAPIServices[0].url}}</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input id="STACreationName" class="input is-danger" type="text" placeholder="exemple : agrhys">
+                </div>
+                <p class="help is-danger">
+                  identifiant du service, pas d'espace, pas accent, pas de majuscule !
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Titre</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea id="STACreationTitle" class="input" type="text" placeholder="Exemple : Observatoire de Recherche en Environnement AgrHyS"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Résumé</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea id="STAAbstract" class="textarea" placeholder=""></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button id="createInstanceButton" class="button is-primary" onclick="createInstance()">
+                      <span>Créer</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+  <script type="text/javascript" src="static/js/createInstance.js"></script>
+  <script type="text/javascript" src="static/js/requeteAsync.js"></script>
+{% include "footer.html" %}

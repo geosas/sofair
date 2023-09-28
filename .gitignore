@@ -1,0 +1,8 @@
+config/setup.py
+config/__pycache__/
+pygeoapi/
+config/manager/
+config/static/tmp/
+config/script/__pycache__/
+config/process/__pycache__/
+config/process/manager/__pycache__/

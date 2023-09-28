@@ -1,0 +1,226 @@
+{% include "header.html" %}
+
+  <section class="section is-title-bar">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <ul>
+            <li>Admin</li>
+            <li>Configuration d'une instance SensorThings</li>
+          </ul>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <div class="buttons is-right">
+            <a href="https://github.com/vikdiesel/admin-one-bulma-dashboard" target="_blank" class="button is-primary">
+              <span class="icon"><i class="mdi mdi-github-circle"></i></span>
+              <span>GitHub</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ <div class="tabs is-centered is-boxed">
+  <ul>
+    <li class="is-active">
+      <a>
+        <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+        <span>Téléchargement</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
+        <span>Upload</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
+        <span>Affichage</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span class="icon is-small"><i class="fas fa-file-text-o" aria-hidden="true"></i></span>
+        <span>Aide</span>
+      </a>
+    </li>
+  </ul>
+</div>
+  <section class="hero is-hero-bar">
+    <div class="hero-body">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item"><h1 class="title">
+            Configuration
+          </h1></div>
+        </div>
+        <div class="level-right" style="display: none;">
+          <div class="level-item"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section is-main-section">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon"><i class="mdi mdi-ballot"></i></span>
+          Configuration
+        </p>
+      </header>
+      <div class="card-content">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Import du fichier xlsx complété</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="field file">
+                <label class="upload control">
+                  <form id="myForm" enctype=multipart/form-data >
+                    <a class="button is-primary">
+                      <span class="icon"><i class="mdi mdi-upload"></i></span>
+                      <span id="spanF">Import fichier config xlsx</span>
+                    </a>
+                    <input id="inputF" type=file name=file accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                  </form>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"><label class="label">Création automatique de la config à partir du fichier xlsx complété</label></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="field file">
+                <label class="upload control">
+                    <button id="save_btn" class="button is-primary" onclick="postXlsxConfig()">
+                        start création
+                    </button >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <script>
+
+    async function postData(url = "",data = {}) {
+
+      const response = await fetch(url, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+
+            },
+            body: JSON.stringify(data),
+        });
+        if (response.status == 201 || response.status == 200) {
+                return response.headers;
+        } else {
+            return false
+        }
+    }
+
+    async function start_ogc_api(data_input,ProcessName) {
+
+      _processing = true;
+      ogcApiProcessUrl='/proxy/?url='+_ogcApiUrl+ProcessName+"/execution"
+      console.log("start query process")
+      data_status = await postData(ogcApiProcessUrl, data_input)
+
+      if (data_status == false) {
+          console.log("error process, ",ProcessName);
+          alert("Le serveur ne repond pas")
+          _processing = false
+          return false
+      } else {
+          console.log("process accepted")
+          location_I='/proxy/?url='+data_status.get('location')+"?f=json"
+          location_R='/proxy/?url='+data_status.get('location')+"/results?f=json"
+          data_process_out = await fetch(location_I)
+              .then((response) => response.json())
+              .then((data_location) =>   {
+                  console.log("check process")
+                  console.log(data_location['progress'])
+
+                  if (data_location['status']=='failed'){
+                      console.log("process failed")
+                      return false
+                  } else {
+                      return data_location
+                  }
+              })
+          console.log("new")
+          console.log(data_process_out['progress'])
+          if (data_process_out==false){
+              return data_process_out
+          } else {
+
+              while (data_process_out['progress'] != 100 ){
+                  await new Promise(resolve => setTimeout(resolve, 2000));
+                  data_process_out = await fetch(location_I).then((response) =>   { return response.json()})
+
+                  console.log(data_process_out['progress'])
+              }
+          }
+          console.log("requete terminée")
+          data_process_out = await fetch(location_R).then((response) =>   { return response.json()})
+          console.log(data_process_out)
+          //plot_culture(0,data_process_out)
+          _processing = false
+          return data_process_out
+      }
+
+    }
+    //fd = new FormData();
+    //        fd.append("photo_file", file);
+    async function postXlsxConfig() {
+      document.getElementById("save_btn").classList.add('is-loading')
+
+      var form = document.getElementById("myForm");
+      var FD = new FormData(form);
+      data_process_out = await fetch("{{ url_for('main.upload_config') }}", {
+
+        method: "POST",
+        body: FD
+      }).then((response) => response.json())
+      .then((data) =>   {
+
+          if (data['etat']=='ok'){
+              alert("upload ok ")
+              console.log(data["api_response"])
+              return true
+          } else {
+              alert("fichier vide ou mal envoyé")
+              console.log(data["api_response"])
+              return false
+          }
+      })
+      .catch(err => {
+        alert("le serveur de stockage  ne répond pas")
+
+      });
+      document.getElementById("save_btn").classList.remove('is-loading')
+      console.log(data_process_out)
+    }
+
+
+
+    function changeText() {
+      var selectElement = document.getElementById("inputF")
+      document.getElementById("spanF").innerText = selectElement.files[0].name
+    }
+    document.getElementById("inputF").addEventListener("change",  changeText);
+  </script>
+
+{% include "footer.html" %}

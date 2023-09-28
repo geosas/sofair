@@ -1,0 +1,15 @@
+{
+  "layerName": "The layer name. This name is used to identify the metadata set",
+  "layerNameIds" : "The name to give to the layer in Geoserver",
+  "layerNameDb": "The table that contains geo data",
+  "theGeomName": "geometry",
+  "workspace": "sensorthings",
+  "storeIds": "sensorthings store",
+  "layerTitle": "The title given to the layer in Geoserver",
+  "uuid": "getUUID()",
+  "metadataTitle": "The title given to the layer in Geonetwork same as Geoserver layerTitle",
+  "creationDate": "Date of the day, AAAA-MM-DD format",
+  "abstract": "Abstract of the data",
+  "lineage": "Cette couche a été générée automatiquement à partir du service OGC SensorThings url_sta()",
+  "author": "Author"
+}

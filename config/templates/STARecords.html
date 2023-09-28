@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  Tableau de bord des services SensorThings
+</h1>
+<h2 class="subtitle">
+</h2>
+
+<div class="columns is-multiline is-mobile">
+  {% for i in baseJsonST: %}
+    <div class="column is-one-quarter">
+      <article class="message">
+	<div class="message-header" >
+	  <p>{{i.name}}</p>
+	</div>
+	<div class="message-body">
+	  <table class='table is-fullwidth'>
+            <tbody>
+              <tr>
+	  <p>{{i.title}}</p>
+              </tr>
+              <tr>
+	  <p><a class="has-text-link" href={{i.url}} target="_blank">{{i.url}}</a></p>
+              </tr>
+            </tbody>
+          </table>
+	  <table class='table is-fullwidth'>
+            <tbody>
+              <tr>
+                <td>Configuration</td>
+                <td>
+                  <div>
+		    {% if i.configuration == "true": %}
+                    <progress class=
+                      "progress is-success"
+                      value="100" max="100">100
+                    </progress>
+		    {% else %}
+                    <progress class=
+                      "progress is-danger"
+                      value="100" max="100">100
+                    </progress>
+		    {% endif %}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Données</td>
+                <td>
+                  <div>
+		    {% if i.data == "true": %}
+                    <progress class=
+                      "progress is-success"
+                      value="100" max="100">100
+                    </progress>
+		    {% else %}
+                    <progress class=
+                      "progress is-danger"
+                      value="100" max="100">100
+                    </progress>
+		    {% endif %}
+                    </progress>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Métadonnées</td>
+                <td>
+                  <div>
+		    {% if i.md_layer != "" and i.md_service != "": %}
+                    <progress class=
+                      "progress is-success"
+                      value="100" max="100">100
+                    </progress>
+		    {% elif i.md_layer != "" or i.md_service != "": %}
+                    <progress class=
+                      "progress is-warning"
+                      value="50" max="100">50
+                    </progress>
+		    {% else  %}
+                    <progress class=
+                      "progress is-danger"
+                      value="100" max="100">100
+                    </progress>
+		    {% endif %}
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+		{% if i.viewer != "" %}
+		<td> <p><a class="has-text-link" href={{i.viewer}} target="_blank">Viewer</a></p></td>
+		{% else %}
+                <td>Viewer</td>
+		{% endif %}
+                <td>
+                  <div>
+		    {% if i.viewer != "" %}
+                    <progress class=
+                      "progress is-success"
+                      value="100" max="100">100
+                    </progress>
+		    {% else %}
+                    <progress class=
+                      "progress is-danger"
+                      value="100" max="100">100
+                    </progress>
+		    {% endif %}
+                  </div>
+                </td>
+          </table>
+	</div>
+      </article>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

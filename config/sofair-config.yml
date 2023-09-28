@@ -1,0 +1,124 @@
+# =================================================================
+#
+# Authors: Tom Kralidis <tomkralidis@gmail.com>
+#
+# Copyright (c) 2020 Tom Kralidis
+#
+# Permission is hereby granted, free of charge, to any person
+# obtaining a copy of this software and associated documentation
+# files (the "Software"), to deal in the Software without
+# restriction, including without limitation the rights to use,
+# copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following
+# conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+#
+# =================================================================
+
+server:
+    bind:
+        host: 0.0.0.0
+        port: 5000
+    url: https://geosas.fr/sofair-dev/api/
+    mimetype: application/json; charset=UTF-8
+    encoding: utf-8
+    gzip: false
+    languages:
+        # First language is the default language
+        - en-US
+        - fr-CA
+    # cors: true
+    pretty_print: true
+    limit: 10
+    templates:
+      # path: /path/to/Jinja2/templates
+      # static: /path/to/static/folder # css/js/img
+       static: /usr/local/sofair-dev/config/static # css/js/img
+    map:
+        url: https://tile.openstreetmap.org/{z}/{x}/{y}.png
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    manager:
+        name: TinyDB
+        connection: /usr/local/sofair-dev/config/manager/sofair-api-process-manager.db
+        output_dir: /usr/local/sofair-dev/config/static/tmp/
+    # ogc_schemas_location: /opt/schemas.opengis.net
+
+logging:
+    level: ERROR
+    logfile: /var/log/pygeoapi/sofair-dev.log
+
+metadata:
+    identification:
+        title:
+            en: SOFAIR API
+            fr: API SOFAIR
+        description:
+            en: pygeoapi provid
+            fr: Sensor Observations to FAIR data. API de mise en conformité avec la directive INSPIRE et les principes FAIR d'un service de diffusion de données temporelles selon le standard OGC SensorThings.
+        keywords:
+            en:
+                - SensorThings
+                - OGC
+                - INSPIRE
+            fr:
+                - SensorThings
+                - OGC
+                - INSPIRE
+        keywords_type: theme
+        terms_of_service: https://creativecommons.org/licenses/by/4.0/
+        url: https://example.org
+    license:
+        name: CC-BY 4.0 license
+        url: https://creativecommons.org/licenses/by/4.0/
+    provider:
+        name: GéoSAS
+        url: https://geosas.fr
+    contact:
+        name: Herve Squividant
+        position: Position Title
+        address: UMR SAS - INRAE - Institut Agro
+        city: Rennes
+        stateorprovince: 65 rue de Saint-Brieuc
+        postalcode: 35042
+        country: France
+        phone:
+        fax:
+        email: geosas_adm@framalistes.org
+        url:
+        hours:
+        instructions:
+        role: pointOfContact
+
+resources:
+    create-sta:
+        type: process
+        processor:
+            name: create-sta
+    create-config-xlsx:
+        type: process
+        processor:
+            name: create-config-xlsx
+    post-observations:
+        type: process
+        processor:
+            name: post-observations
+    sta-to-sdi:
+        type: process
+        processor:
+            name: sta-to-sdi
+    create-viewer:
+        type: process
+        processor:
+            name: create-viewer

@@ -1,0 +1,4 @@
+{"examples":[
+    {"name": "Exutoires de l'ORE AgrHys", "file":"agrhys_sensorthings.xlsx", "url": "static/xlsx/config/manuel/agrhys_sensorthings.xlsx", "author": "Christophe Geneste", "date": "9 juin 2023", "icon":"https://avatars.dicebear.com/v2/initials/agrhys.svg"},
+    {"name": "Station Météo SOERE PRO EFELE", "file":"efele_station_campbell_sensorthings.xlsx", "url": "static/xlsx/config/manuel/efele_station_campbell_sensorthings.xlsx", "author": "Tom Lorée", "date": "1 mars 2023", "icon":"https://avatars.dicebear.com/v2/initials/efele.svg"}
+]}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icon.png')}}">
+    <title>SOFAIR</title>
+    <link  rel="stylesheet" href="{{ url_for('static', filename='style.css')}}"  />
+
+</head>
+
+<body>
+    <nav class="navbar is-black has-shadow" role="navigation" aria-label="main navigation">
+        <div id="navMenu" class="navbar-menu ">
+            <div class="navbar-start">
+                <span id='navbarInstance' class="navbar-item">
+                    Veuilleur créer ou choisir une instance
+                </span>
+                <span id='navbarThings' class="navbar-item"></span>
+                <span id='navbarObservedProperties' class="navbar-item"></span>
+                <span id='navbarObservations' class="navbar-item"></span>
+            </div>
+            <div class="navbar-end">
+                <a href="https:geosas.fr/logout" class="navbar-item">
+                    la fin de la barre
+                </a>
+            </div>
+
+        </div>
+    </nav>
+    <section class="hero is-primary is-fullheight-with-navbar has-background-grey-light">
+        <div class="hero body">
+
+                <section class="section">
+                    {% block content %}
+                    {% endblock %}
+                </section>
+
+        </div>
+    </section>
+    <footer class="footer has-text-primary-light has-background-black">
+        <div class="content has-text-centered">
+
+            It's<strong class="has-text-grey-lighter"> SOFAIR</strong> powered by GéoSAS
+
+        </div>
+    </footer>
+
+</body>
+<script>
+
+//var username = document.getElementsByClassName("logged")[0].innerText.split(" ")[0]
+//document.getElementById('Geoname').innerHTML = username
+
+
+</script>
+</html>

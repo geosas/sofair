@@ -1,0 +1,33 @@
+#install pygeoapi
+
+python3 -m venv pygeoapi
+cd pygeoapi
+. bin/activate
+git clone https://github.com/geopython/pygeoapi.git
+cd pygeoapi
+pip3 install -r requirements.txt
+python3 setup.py install
+
+#install sofair
+########################
+which pip
+pip install -r requirements.txt
+
+
+#activate sofair
+#############################
+
+rm -R /usr/local/sofair-dev/pygeoapi/lib/python3.7/site-packages/pygeoapi-0.16.dev0-py3.7.egg/pygeoapi/process 
+rm /usr/local/sofair-dev/pygeoapi/lib/python3.7/site-packages/pygeoapi-0.16.dev0-py3.7.egg/pygeoapi/plugin.py 
+
+
+ln -s /usr/local/sofair-dev/config/plugin.py /usr/local/sofair-dev/pygeoapi/lib/python3.7/site-packages/pygeoapi-0.16.dev0-py3.7.egg/pygeoapi/plugin.py
+ln -s /usr/local/sofair-dev/config/process /usr/local/sofair-dev/pygeoapi/lib/python3.7/site-packages/pygeoapi-0.16.dev0-py3.7.egg/pygeoapi/process
+
+mkdir /usr/local/sofair-dev/config/static/tmp
+
+source /usr/local/sofair-dev/pygeoapi/bin/activate
+export PYGEOAPI_CONFIG=/usr/local/sofair-dev/config/sofair-config.yml
+export PYGEOAPI_OPENAPI=/usr/local/sofair-dev/config/sofair-openapi.yml
+
+pygeoapi openapi generate $PYGEOAPI_CONFIG > $PYGEOAPI_OPENAPI

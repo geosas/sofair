@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="columns">
+  <div class="column ">
+    <div class="box has-background-light">
+      <div class="block">
+        Choix de l'instance SensorThings
+      </div>
+      <div class="bloc">
+        <div class="tabs is-fullwidth is-toggle has-text-black">
+          <ul>
+            <li id='tabOpen' onclick="toggle('Open','New');"><a >Ouvrir</a></li>
+            <li id='tabNew'  onclick="toggle('New','Open');"><a >Nouveau</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="box is-hidden" id="ongletOpen">
+        <div style="display: grid" >
+          <div style="overflow: scroll" >
+            <table class="table is-scrollable is-bordered is-hoverable">
+              <thead>
+                <tr>
+                  <th>choix</th>
+                  <th >Instance</th>
+                  <th>Titre</th>
+                  <th>Créateur</th>
+                  <th>url</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in baseJsonST: %}
+                <tr>
+                  <th><input type="radio" name="inputInstance" value="{{i.name}}"> </th>
+                  <th>{{i.name}}</th>
+                  <td>{{i.title}}</td>
+                  <td>{{i.owner}}</td>
+                  <td id="{{i.name+'url_src'}}"> <a class="has-text-link" href={{i.url}}>{{i.url}}</a> </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="box is-hidden" id="ongletNew">
+          <div class="field">
+            <label class="label">Nom</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Nom de l'instance" id="nom_instance_creation">
+            </div>
+            <p class="help">Nom unique de votre service</p>
+          </div>
+          <div class="field">
+            <label class="label">Titre</label>
+            <div class="control">
+              <textarea class="textarea" placeholder="Titre de l'instance"></textarea>
+            </div>
+            <p class="help">exemple d'aide pour la création de titre ?</p>
+          </div>
+          <p id="url_dynamique"></p>
+          <div class="field">
+            <button class="button is-link">Création</button>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-hidden" id="column_gestion">
+    <div class="box">
+      <div class="block">
+        GESTION de la config
+      </div>
+      <div class="block">
+        <span id="config_name_gestion"></span>
+      </div>
+      <div class="block">
+        Télécharger xlsx exemple
+      </div>
+      <div class="block">
+        Télécharger xlsx de l'instance
+      </div>
+      <div class="block">
+        uploader un xlsx pour mettre à jour la config
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="box has-background-light">
+  <div class="block">
+    Création WMS et publication Métadata
+  </div>
+  <div class="field">
+    <label class="label">Url du sensorthings</label>
+    <div class="control">
+      <input class="input" type="text" placeholder="https://api.geosas.fr/..../v1.0/" id="">
+    </div>
+    <p class="help">Url du sensorthings déjà créé</p>
+  </div>
+  <div class="block">
+    <div class="box">
+      {% for key, value in dict_metadata.items() %}
+        <div class="field">
+          <label class="label">{{key}}</label>
+          <div class="control">
+            <textarea class="textarea" id="{{key}}"></textarea>
+          </div>
+          <p class="help">{{value}}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="field">
+    <button class="button is-link">Création</button>
+  </div>
+</div>
+
+<script>
+
+  function getInfosSt(url_st,objetST){
+    fetch(url_st+objetST+"?$count=true&$select=id")
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      valeur = data["@iot.count"]
+      if (valeur == undefined){
+        valeur = 0
+      }
+      document.getElementById("navbar"+objetST).textContent = objetST+" : " + valeur
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+  var toggle = (ongletOpen,ongletClose) => {
+    let element = document.getElementById("onglet"+ongletOpen);
+    document.getElementById("tab"+ongletOpen).classList.toggle("has-background-info")
+
+
+    element.classList.toggle("is-hidden")
+    if (document.getElementById("onglet"+ongletClose).classList.value.includes('is-hidden') == false){
+      document.getElementById("onglet"+ongletClose).classList.toggle("is-hidden")
+      document.getElementById("tab"+ongletClose).classList.toggle("has-background-info")
+
+
+    }
+  }
+
+  function modifyText() {
+    const url_dynamique = document.querySelector("#url_dynamique");
+    url_dynamique.textContent='https://api.geosas.fr/'+document.getElementById("nom_instance_creation").value+'/v1.0/'
+  }
+  const nom_instance_el = document.getElementById("nom_instance_creation");
+  nom_instance_el.addEventListener("change", modifyText, false);
+
+  function selectionInstance() {
+    radioButtons = document.querySelectorAll('input[name="inputInstance"]');
+    for (radioButton of radioButtons) {
+      if (radioButton.checked) {
+          selectedInstance = radioButton.value;
+          break;
+      }
+    }
+    document.getElementById("config_name_gestion").textContent = selectedInstance
+    document.getElementById("navbarInstance").textContent = "Instance : " + selectedInstance
+
+    getInfosSt(document.getElementById(selectedInstance+"url_src").textContent.slice(0, -1),"Things")
+    getInfosSt(document.getElementById(selectedInstance+"url_src").textContent.slice(0, -1),"ObservedProperties")
+    getInfosSt(document.getElementById(selectedInstance+"url_src").textContent.slice(0, -1),"Observations")
+
+    if (document.getElementById("column_gestion").classList.value.includes('is-hidden') == true){
+      document.getElementById("column_gestion").classList.toggle("is-hidden")
+    }
+  }
+  const radio_ouverture_src = document.querySelectorAll('input[name="inputInstance"]').forEach((elem) => {
+    elem.addEventListener("change", selectionInstance, false)
+  });
+
+</script>
+{% endblock %}

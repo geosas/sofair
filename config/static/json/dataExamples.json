@@ -1,0 +1,4 @@
+{"examples":[
+    {"name": "Données météo Agri4cast", "file":"agri4cast_src.csv", "url": "static/xlsx/data/agri4cast_src.csv", "author": "Tom Lorée", "date": "22 juin 2022", "icon":"https://avatars.dicebear.com/v2/initials/agri4cast.svg"},
+    {"name": "Données Station Météo EFELE", "file":"efele_data_meteo.csv", "url": "static/xlsx/data/efele_data_meteo.csv", "author": "Tom Lorée", "date": "1 mars 2023", "icon":"https://avatars.dicebear.com/v2/initials/efele.svg"}
+]}

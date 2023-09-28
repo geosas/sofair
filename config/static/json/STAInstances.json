@@ -1,0 +1,17 @@
+{"instances":[
+    {"name": "agrhys", "url": "https://api.geosas.fr/agrhys/v1.0/", "title": "ORE AgrHyS", "owner": "cgeneste"},
+    {"name": "batelev", "url": "https://api.geosas.fr/batelev/v1.0/", "title": "Bâtiment d'élevage", "owner": "madam"},
+    {"name": "rennesmetro", "url": "https://api.geosas.fr/rennesmetro/v1.0/", "title": "Capteurs Lora Rennes Métropôle", "owner": "madam"},
+    {"name": "agri4cast", "url": "https://api.geosas.fr/agri4cast/v1.0/", "title": "Archives météo Agri4cast", "owner": "tloree"},
+    {"name": "safran", "url": "https://api.geosas.fr/safran/v1.0/", "title": "Archives météo France SAFRAN", "owner": "tloree"},
+    {"name": "selune", "url": "https://api.geosas.fr/selune/v1.0/", "title": "Observatoire Sélune", "owner": "athomas"},
+    {"name": "wsci", "url": "https://api.geosas.fr/wsci/v1.0/", "title": "Projet CIPAN", "owner": "tloree"},
+    {"name": "efele", "url": "https://api.geosas.fr/efele/v1.0/", "title": "SOERE PRO EFELE", "owner": "tloree"},
+    {"name": "bosco", "url": "https://api.geosas.fr/bosco/v1.0/", "title": "Projet BOSCO - Humidité de surface par satellite", "owner": "tloree"},
+    {"name": "onde", "url": "https://api.geosas.fr/onde/v1.0/", "title": "Réseau ONDE - Observatoire de l'intermittence", "owner": "tloree"},
+    {"name": "vdt", "url": "https://api.geosas.fr/vdt/v1.0/", "title": "Observatoire des vers de terre", "owner": "madam"},
+    {"name": "monitoringquimper", "url": "https://api.geosas.fr/monitoringquimper/v1.0/", "title": "Température chambre froide de Quimper", "owner": "tloree"},
+    {"name": "hubeau", "url": "https://api.geosas.fr/hubeau/v1.0/", "title": "Hub'Eau - Archives nationales des Données de débit", "owner": "tloree"},
+    {"name": "brgm", "url": "https://sensorthings-wq.brgm-rec.fr/FROST-Server/v1.0/", "title": "Stations qualité du BRGM", "owner": "sgrellet"}
+]
+}

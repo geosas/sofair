@@ -1,0 +1,70 @@
+{
+  "layerName": "{{layerName}}",
+  "layerNameIds" : "{{layerNameIds}}",
+  "layerType": "postgis",
+  "schemaName": "sensorthings",
+  "layerNameDb": "{{layerNameDb}}",
+  "theGeomName": "geometry",
+  "dataType": "quanti",
+  "workspace": "sensorthings",
+  "storeIds": "sensorthings_store",
+  "layerTitle": "{{layerTitle}}",
+  "nativeCrs": 4326,
+  "metadata" : {
+    "uuid": "{{uuid}}",
+    "metadataTitle": "{{metadataTitle}}",
+    "creationDate": "{{creationDate}}",
+    "abstract": "{{abstract}}",
+    "lineage": "Cette couche a été générée automatiquement à partir du service OGC SensorThings {{url_sta}}",
+    "spatialRepresentationType": "vector",
+    "spatialResolution": 10000,
+    "legalUseLimitation": null,
+    "accessConstraint": null,
+    "useConstraint": "Usage libre sous réserve des mentions obligatoires sur tout docume nt de diffusion : Source : UMR 1069 SAS INRAE - Institut Agro",
+    "otherConstraint": "Pas de restriction d’accès public",
+    "uniqueIdentifier": null,
+    "licence": "La licence qui s'applique pour la réutilisation de cette carte est la « Licence Ouverte / Open License » Etalab, version 2.0",
+"licenceUrl": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+    "onlineResources": [
+      {
+        "resourceURL": "-",
+        "resourceProtocol": "OGC:WMS",
+        "resourceName": "{{layerNameIds}}",
+        "resourceDescription": "",
+        "ordre": 1
+      },
+      {
+        "resourceURL": "{{url_sta}}",
+        "resourceProtocol": "WWW:LINK-1.0-http--link",
+        "resourceName": "Service SensorThings",
+        "resourceDescription": "Service OGC SensorTings The resource description",
+        "ordre": 2
+      }
+    ],
+    "author": [
+      {
+        "author": "{{author}}",
+        "affiliation": "INRAE, Institut Agro, SAS, 35042, Rennes, France"
+      }
+    ],
+    "inspireTheme": "Installations de suivi environnemental",
+    "keywords": [
+      {
+        "keyword": "données ouvertes",
+        "keywordtype": "theme"
+      },
+      {
+        "keyword": "série temporelle",
+        "keywordtype": "theme"
+      }
+    ],
+    "resourcePoc": {
+      "organisationName": "UMR 1069 SAS INRAE - Institut Agro",
+      "deliveryPoint": "65 rue de Saint-Brieuc",
+      "city": "Rennes",
+      "postalCode": "35042",
+      "country": "France",
+      "electronicMailAddress": "geosas_adm@framalistes.org"
+    }
+  }
+}

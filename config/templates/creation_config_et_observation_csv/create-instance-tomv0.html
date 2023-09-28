@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="field">
+  <label class="label">Méthode csv complet :</label>
+<form id="photo_placette" enctype="multipart/form-data">
+    <input onchange="resize()" name="file" type="file" id="photo_id" accept=".csv"/>
+</form>
+</div>
+
+<div id="out"></div>
+
+<script>
+
+array_ST=['things','obsP','location','sensor','observation']
+
+array_ST_properties={'things':['name','description','propriété autre']
+}
+
+dico_out={'things':[],'obsP':[],'location':[],'sensor':[],'observation':[]}
+
+function check_properties_ST(idp){
+
+propertie= document.getElementById("select_properties_"+idp).value
+st_object = document.getElementById("select_"+idp).value
+
+if (dico_out[st_object].includes(propertie) & propertie != 'propriété autre') {
+console.log('déjà sélect')
+document.getElementById("select_properties_"+idp).value='doublon'
+document.getElementById("select_properties_"+idp).text='doublon'
+
+}
+else  {
+dico_out[st_object].push(propertie)
+}
+
+}
+
+function show_properties_ST(idp){
+
+st_classe=document.getElementById(idp).value
+
+idp=idp.split('select_')[1]
+ligne=document.getElementById(idp+"_properties")
+
+selectList = document.createElement("select");
+selectList.id = "select_properties_"+idp;
+
+selectList.onchange = function() { check_properties_ST(idp)}
+
+ligne.appendChild(selectList);
+var option = document.createElement("option")
+option.value = "";
+option.text = "choisir une propriété";
+selectList.appendChild(option);
+for (var y = 0; y < array_ST_properties[st_classe].length; y++) {
+var option = document.createElement("option")
+option.value = array_ST_properties[st_classe][y];
+option.text = array_ST_properties[st_classe][y];
+selectList.appendChild(option);
+}
+
+
+
+
+}
+
+
+
+
+
+
+function resize() {
+const csvFileData = document.getElementById("photo_id")
+
+//const csvArray = csvFileData.split('\n')
+//console.log(csvArray)
+const reader = new FileReader()
+reader.onload = () => {
+colonne=reader.result.split('\n')[0].split(',')
+//document.getElementById('out').innerHTML = reader.result.split('\n')[0]
+
+let table = document.createElement("table");
+table.id='table_recap'
+//table.classList.add("table_soil")
+
+let thead = table.createTHead();
+let row = thead.insertRow();
+
+let th = document.createElement("th");
+let text = document.createTextNode('Champ csv');
+th.appendChild(text);
+row.appendChild(th);
+let th1 = document.createElement("th");
+let text1 = document.createTextNode('ST classe');
+th1.appendChild(text1);
+row.appendChild(th1);
+let th2 = document.createElement("th");
+let text2 = document.createTextNode('Objet St classe');
+th2.appendChild(text2);
+row.appendChild(th2);
+
+let place1 = document.getElementById("out");
+place1.appendChild(table);
+
+for (let i in  colonne){
+
+colonne[i]=colonne[i].replace(/['"]+/g, '')
+//document.getElementById('out').innerHTML +='<br>'
+//document.getElementById('out').innerHTML +=colonne[i]
+
+let row = table.insertRow();
+headerCell = document.createElement("TH")
+headerCell.innerHTML = colonne[i]
+row.appendChild(headerCell);
+
+cell = row.insertCell();
+selectList = document.createElement("select");
+selectList.id = "select_"+colonne[i];
+selectList.onchange = function() { show_properties_ST("select_"+colonne[i])}
+cell.appendChild(selectList);
+var option = document.createElement("option")
+option.value = "";
+option.text = "choisir une classe";
+selectList.appendChild(option);
+for (var y = 0; y < array_ST.length; y++) {
+  var option = document.createElement("option")
+  option.value = array_ST[y];
+  option.text = array_ST[y];
+  selectList.appendChild(option);
+}
+
+
+
+cell = row.insertCell();
+text = document.createElement("div")
+text.id = colonne[i]+"_properties";
+cell.appendChild(text);
+
+
+}
+}
+// start reading the file. When it is done, calls the onload event defined above.
+
+reader.readAsText(csvFileData.files[0])
+
+
+
+}
+
+
+</script>
+{% endblock %}

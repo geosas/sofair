@@ -1,0 +1,9 @@
+geopandas
+pandas
+sqlalchemy
+numpy
+rasterio
+psycopg2
+xmltodict
+openpyxl
+xlrd

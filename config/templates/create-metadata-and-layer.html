@@ -1,0 +1,193 @@
+{% include "header.html" %}
+
+  <section class="section is-title-bar">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <ul>
+            <li>Admin</li>
+            <li>I.D.G.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <div class="buttons is-right">
+            <a href="https://github.com/vikdiesel/admin-one-bulma-dashboard" target="_blank" class="button is-primary">
+              <span class="icon"><i class="mdi mdi-github-circle"></i></span>
+              <span>GitHub</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="hero is-hero-bar">
+    <div class="hero-body">
+      <p class="title">
+        Infrastructure de Données Géographiques
+      </p>
+      <p class="subtitle">
+        Ici, vous pouvez connecter un service SensorThings à une Infrastructure de Données Géographiques (IDG).
+        Pour cela, il vous suffit de sélectionner une instance puis, si besoin, de compléter les informations relatives à cette instance.
+        En actionnant le bouton "Publier", le service publiera automatiquement dans l'IDG une métadonnée dans le catalogue et une couche géographique dans le serveur OGC.</p>
+      </p>
+    </div>
+  </section>
+  <section class="section is-main-section">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon"><i class="mdi mdi-ballot"></i></span>
+          Publication de métadonnées
+        </p>
+      </header>
+      <div class="card-content">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Service à configurer</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="STAInfo" onChange='STAChange();'>
+                      {% for i in baseJsonST: %}
+                      <option value="{{i}}">{{i.title}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field-body is-normal">
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <label id="STAUrl" class="label">{{baseJsonST[0].url}}</label>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Créateur</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <input id="STAOwner" class="input" type="text" placeholder="Nom" value="{{baseJsonST[0].owner}}">
+                  <span class="icon is-small is-left"><i class="mdi mdi-account"></i></span>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control is-expanded has-icons-left has-icons-right">
+                  <input id="STAEmail" class="input is-success" type="email" placeholder="Email" value="{{baseJsonST[0].email}}">
+                  <span class="icon is-small is-left"><i class="mdi mdi-mail"></i></span>
+                  <span class="icon is-small is-right"><i class="mdi mdi-check"></i></span>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <input class="input" type="text" placeholder="Unité">
+                  <span class="icon is-small is-left"><i class="mdi mdi-account"></i></span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Nom</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input id="STALabel" class="input is-danger" type="text" placeholder="exemple : agrhys" value="{{baseJsonST[0].name}}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Titre</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea id="STATitle" class="input" type="text" placeholder="Exemple : Observatoire de Recherche en Environnement AgrHyS">{{baseJsonST[0].title}}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Résumé</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea id="STAAbstract" class="textarea" placeholder="">{{baseJsonST[0].abstract}}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button id="save_btn" class="button is-primary" onclick="post_metadata()">
+                      <span>Publier</span>
+                    </button>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+  <script type="text/javascript" src="static/js/configure-instance.js"></script>
+  <script>
+    var _ogcApiUrl='https://api.geosas.fr/pygeoapi-dev/processes/'
+    var ProcessName ='st_to_wms'
+    //var url_post = '/proxy/?url='+_ogcApiUrl+ProcessName+"/execution"
+    var url_post = _ogcApiUrl+ProcessName+"/execution"
+    async function post_metadata(){
+      console.log("start process")
+      document.getElementById("save_btn").classList.add('is-loading')
+      var url_st = document.getElementById('STAUrl').textContent
+      var abstract  = document.getElementById('STAAbstract').textContent
+      var author =   document.getElementById('STAOwner').value
+      var geoserver_title =  document.getElementById('STATitle').value
+
+      data ={
+        "inputs": {
+          "url_st": url_st,
+          "abstract": abstract,
+          "author":author,
+          "geoserver_title":geoserver_title
+        }//,"mode": "async","response":"document"
+      }
+
+      var response = await fetch(url_post, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+
+            },
+            body: JSON.stringify(data),
+        });
+      console.log(response['response'])
+      console.log(response['url_info'])
+      document.getElementById("save_btn").classList.remove('is-loading')
+
+    }
+  </script>
+{% include "footer.html" %}
