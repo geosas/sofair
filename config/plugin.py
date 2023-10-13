@@ -69,7 +69,8 @@ PLUGINS = {
         'create-viewer': 'pygeoapi.process.createViewer.createViewerProcessor',
         'create-config-xlsx':'pygeoapi.process.createConfigXLSX.createConfigXLSXProcessor',
         'post-observations':'pygeoapi.process.postObservations.postObservationsProcessor',
-        'sta-to-sdi':'pygeoapi.process.STAToSDI.STAToSDIProcessor'
+        'sta-to-sdi':'pygeoapi.process.STAToSDI.STAToSDIProcessor',
+        'enhanced-viz':'pygeoapi.process.enhancedViz.enhancedVizProcessor'
 
     },
     'process_manager': {

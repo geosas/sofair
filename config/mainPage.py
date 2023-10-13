@@ -23,15 +23,25 @@ def index():
     :returns: template
     """
     print("connexion SOFair index")
-
+    statJsonST = {
+        "nb_instances": 0,
+        "nb_things": 0,
+        "nb_observedProperties": 0,
+        "nb_observations": 0
+    }
     with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
+    statJsonST ['nb_instances'] = len (baseJsonST)
+    for i in baseJsonST:
+        statJsonST ['nb_things'] += i['nb_things']
+        statJsonST ['nb_observedProperties'] += i['nb_observedProperties']
+        statJsonST ['nb_observations'] += i['nb_observations']
 
     with open(confLoading().pathStatic+"json/dico_jinja.json",'r', encoding='utf-8') as dico_template:
         dict_metadata=json.load( dico_template)
 
-    return render_template('index.html',baseJsonST= baseJsonST, dict_metadata = dict_metadata)
+    return render_template('index.html',baseJsonST= baseJsonST, dict_metadata = dict_metadata, statJsonST = statJsonST)
 
 
 @main.route('/home')
@@ -42,15 +52,25 @@ def home():
     :returns: template
     """
     print("connexion SOFair index")
-
+    statJsonST = {
+        "nb_instances": 0,
+        "nb_things": 0,
+        "nb_observedProperties": 0,
+        "nb_observations": 0
+    }
     with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
+    statJsonST ['nb_instances'] = len (baseJsonST)
+    for i in baseJsonST:
+        statJsonST ['nb_things'] += i['nb_things']
+        statJsonST ['nb_observedProperties'] += i['nb_observedProperties']
+        statJsonST ['nb_observations'] += i['nb_observations']
 
     with open(confLoading().pathStatic+"json/dico_jinja.json",'r', encoding='utf-8') as dico_template:
         dict_metadata=json.load( dico_template)
 
-    return render_template('index.html',baseJsonST= baseJsonST, dict_metadata = dict_metadata)
+    return render_template('index.html',baseJsonST= baseJsonST, dict_metadata = dict_metadata, statJsonST = statJsonST)
 
 @main.route('/creation-instance')
 def instance():
@@ -110,24 +130,10 @@ def STARecords():
     :returns: template
     """
     print("Fiche STARecords")
-    with open(confLoading().pathStatic+"json/STAInstances_v2.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
+    with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
     return render_template('STARecords.html',baseJsonST= baseJsonST)
-
-@main.route('/dashboard')
-def dashboard():
-    """
-    Fiche sta
-
-    :returns: template
-    """
-    print("Fiche dashboard")
-    with open(confLoading().pathStatic+"json/STAInstances_v2.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
-        baseJsonST = json.load(json_src)
-    baseJsonST=baseJsonST['instances']
-
-    return render_template('dashboard.html',baseJsonST= baseJsonST)
 
 @main.route('/create-instance')
 def createinstance():
@@ -137,9 +143,9 @@ def createinstance():
     :returns: template
     """
     print("Fiche create-instance")
-    with open(confLoading().pathStatic+"json/APIServices.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
+    with open(confLoading().pathStatic+"json/STAServices.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseAPIServices = json.load(json_src)
-    baseAPIServices=baseAPIServices['APIServices']
+    baseAPIServices=baseAPIServices['STAServices']
 
     return render_template('create-instance.html',baseAPIServices= baseAPIServices)
 
@@ -151,7 +157,7 @@ def createinstancetom():
     :returns: template
     """
     print("Fiche create-instance-tom")
-    with open(confLoading().pathStatic+"json/STAInstances_v2.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
+    with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
 
@@ -220,7 +226,7 @@ def configureinstance():
     :returns: template
     """
     print("Fiche configure-instance")
-    with open(confLoading().pathStatic+"json/STAInstances_v2.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
+    with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
 
@@ -238,7 +244,7 @@ def uploaddata():
     :returns: template
     """
     print("Fiche upload-data")
-    with open(confLoading().pathStatic+"json/STAInstances_v2.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
+    with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
 
@@ -321,7 +327,7 @@ def createmetadata():
     :returns: template
     """
     print("Fiche create-metadata-and-layer")
-    with open(confLoading().pathStatic+"json/STAInstances_v2.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
+    with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
 
@@ -335,7 +341,7 @@ def createviewer():
     :returns: template
     """
     print("Page create-viewer")
-    with open(confLoading().pathStatic+"json/STAInstances_v2.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
+    with open(confLoading().pathStatic+"json/STAInstances.json", encoding='utf-8') as json_src: #mettre dans la config le chemin
         baseJsonST = json.load(json_src)
     baseJsonST=baseJsonST['instances']
 

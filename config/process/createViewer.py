@@ -3,6 +3,7 @@ from pygeoapi.process.base import BaseProcessor, ProcessorExecuteError
 import datetime
 import sys
 from pathlib import Path
+import logging
 
 from .setupProcess import confProcess
 sys.path.insert(1, confProcess().pathWd)
@@ -87,7 +88,8 @@ class createViewerProcessor(BaseProcessor):
         super().__init__(processor_def, PROCESS_METADATA)
 
     def execute(self, data):
-        print("ok createViewer go")
+        logging.basicConfig(filename=config.pathData+"logger.log", encoding='utf-8', level=logging.DEBUG)
+        logging.info("ok createViewer go")
 
         mimetype = 'application/json'
         url_sensorthings = data.get('url_sensorthings', None)
@@ -101,12 +103,12 @@ class createViewerProcessor(BaseProcessor):
             #raise ProcessorExecuteError('Cannot process without a url_st')
 
         #download data
-        print("Start process")
+        logging.info("Start process for ")
 
         idprocess= datetime.datetime.now().strftime("%y%m%d_%H%M%S%f")
-
+        logging.info(url_sensorthings)
         url_mviewer, url_config = viewerConfiguration.main(url_sensorthings, config)
-
+        logging.info('process finish')
         if url_mviewer !='failed':
             outputs = {
                     'url_mviewer': url_mviewer,

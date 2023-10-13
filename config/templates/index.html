@@ -1,27 +1,5 @@
 {% include "header.html" %}
 
-<section class="section is-title-bar">
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <ul>
-            <li>Admin</li>
-            <li>Accueil</li>
-          </ul>
-        </div>
-      </div>
-      <div class="level-right">
-        <div class="level-item">
-          <div class="buttons is-right">
-            <a href="https://github.com/geosas/" target="_blank" class="button is-primary">
-              <span class="icon"><i class="mdi mdi-github-circle"></i></span>
-              <span>GitHub</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
   <section class="hero is-hero-bar">
     <div class="hero-body">
       <div class="level">
@@ -47,7 +25,7 @@
                   Instances
                 </h3>
                   <h1 class="title">
-                    14
+                    {{statJsonST.nb_instances}}
                   </h1>
                 </div>
               </div>
@@ -66,10 +44,32 @@
             <div class="level is-mobile">
               <div class="level-item">
                 <div class="is-widget-label"><h3 class="subtitle is-spaced">
+                  Objets
+                </h3>
+                  <h1 class="title">
+                    {{statJsonST.nb_things}}
+                  </h1>
+                </div>
+              </div>
+              <div class="level-item has-widget-icon">
+                <div class="is-widget-icon"><span class="icon has-text-danger is-large"><i
+                    class="mdi mdi-access-point mdi-48px"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tile is-parent">
+        <div class="card tile is-child">
+          <div class="card-content">
+            <div class="level is-mobile">
+              <div class="level-item">
+                <div class="is-widget-label"><h3 class="subtitle is-spaced">
                   Propriètés observées
                 </h3>
                   <h1 class="title">
-                    229
+                    {{statJsonST.nb_observedProperties}}
                   </h1>
                 </div>
               </div>
@@ -88,10 +88,10 @@
             <div class="level is-mobile">
               <div class="level-item">
                 <div class="is-widget-label"><h3 class="subtitle is-spaced">
-                  Données
+                  Observations
                 </h3>
                   <h1 class="title">
-                    156 029 029
+                    {{statJsonST.nb_observations}}
                   </h1>
                 </div>
               </div>
@@ -116,7 +116,7 @@
         </a>
       </header>
     </div>
-{% block content %}
+    {% block content %}
 <div class="columns is-multiline is-mobile">
   {% for i in baseJsonST: %}
     <div class="column is-one-quarter">
@@ -137,6 +137,38 @@
           </table>
 	  <table class='table is-fullwidth'>
             <tbody>
+              <tr>
+		<div class="columns">
+                  <div class="column is-one-quarter">
+                    <div class="level is-mobile">
+		      <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">Objets</p>
+                          <p class="title"><a href="{{i.url}}Things?$count=true" target="_blank">{{i.nb_things}}</a></p>
+                        </div>
+                        <div class="is-widget-icon"><span class="icon has-text-danger">                                <i class="mdi mdi-access-point mdi-24px"></i></span>
+                        </div>
+                      </div>
+		      <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">Propriètés</p>
+                          <p class="title"><a href="{{i.url}}ObservedProperties?$count=true" target="_blank">{{i.nb_observedProperties}}</a></p>
+                        </div>
+                        <div class="is-widget-icon"><span class="icon has-text-info">                                <i class="mdi mdi-microscope mdi-24px"></i></span>
+                        </div>
+                      </div>
+		      <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">Observations</p>
+                          <p class="subtitle"><a href="{{i.url}}Observations?$count=true" target="_blank">{{i.nb_observations}}</a></p>
+                        </div>
+                        <div class="is-widget-icon"><span class="icon has-text-success">                                <i class="mdi mdi-finance mdi-24px"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </tr>
               <tr>
                 <td>Configuration</td>
                 <td>

@@ -1,6 +1,7 @@
 geopandas
 pandas
 sqlalchemy
+GeoAlchemy2
 numpy
 rasterio
 psycopg2

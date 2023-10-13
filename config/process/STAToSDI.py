@@ -176,12 +176,12 @@ def publie_couche_metadonnee(abstract, author, pg_table, titre_geoserver, url_st
         environment = Environment(loader=FileSystemLoader(config.pathData[:-1]))
         template = environment.get_template("sensorthings-metadata-iso19139.json")
 
-        filename = "/data/2ids/2ids_metadata/json/"+pg_table+".json"
+        filename = "/data/ids/2ids/2ids_metadata/json/"+pg_table+".json"
         content = template.render(**dico_jinja)
         with open(filename, mode="w", encoding="utf-8") as message:
             message.write(content)
         print('publish by 2ids')
-        a=os.system("/usr/local/bin/2ids publish %s" %(pg_table))
+        a=os.system("/data/ids/2ids/2ids/2ids publish %s" %(pg_table))
 
         print(a)
         if a==0:
@@ -257,7 +257,7 @@ class STAToSDIProcessor(BaseProcessor):
         print("publish PSQL")
         try:
             station.to_postgis(pg_table, con=db, if_exists='replace',schema='sensorthings')
-        except:
+        except :
             outputs ={'response':"impossible de créer la couche dans la BDD"}
             return mimetype, outputs
 
@@ -266,9 +266,7 @@ class STAToSDIProcessor(BaseProcessor):
         #publish geoserver
         print("publish geoserver")
         #retour,retour_txt=publie_couche(pg_table,config.service_url, config.workspace, config.name_entrepot, config.auth_x)
-
         retour = publie_couche_metadonnee(abstract, author, pg_table, titre_geoserver, url_st)
-
 
         if retour==201:
             outputs = {

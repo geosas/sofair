@@ -9,6 +9,7 @@ import requests
 import xmltodict
 from pyproj import Transformer
 import numpy as np
+import logging
 
 def main(url_sensorthings, config):
 
@@ -16,14 +17,14 @@ def main(url_sensorthings, config):
         name=url_sensorthings.split('/')[-3]
 
         r = requests.get(url="%s/sensorthings/wms?service=wms&request=GetCapabilities&layer=%s&version=1.1.1" % (config.service_url, name))
-        print(r.status_code)
+        logging.info(r.status_code)
         capabilities = xmltodict.parse(r.content.decode('utf-8'))
-
+        logging.info("iterate capabilities")
         for i in capabilities['WMT_MS_Capabilities']['Capability']['Layer']['Layer']:
             if i['Name'] != name:
                 continue
-            print(i['Name'])
-            print(i['BoundingBox'])
+            logging.info(i['Name'])
+            logging.info(i['BoundingBox'])
             break
 
         transformer = Transformer.from_crs(i['BoundingBox']['@SRS'],"EPSG:3857")
@@ -31,7 +32,7 @@ def main(url_sensorthings, config):
         maxi=transformer.transform(i['BoundingBox']['@maxy'],i['BoundingBox']['@maxx'])
 
         bbox="%s, %s, %s, %s" % (mini[0], mini[1], maxi[0], maxi[1])
-        print(bbox)
+        logging.info(bbox)
         center="%s, %s" % ( (mini[0]+maxi[0])/2, (mini[1]+maxi[1])/2)
 
         transformer = Transformer.from_crs( i['BoundingBox']['@SRS'], "EPSG:2154")
@@ -62,10 +63,11 @@ def main(url_sensorthings, config):
 
         url_config=config.url_sofair_static+'configMviewer/'+name+'.xml'
         url_mviewer=config.url_Mviewer_geosas+url_config
-        print("creation finish")
+        logging.info("creation finish")
 
     except Exception as e:
-        print(e)
+        logging.info(str(e))
         url_mviewer='failed'
+        url_config='failed'
 
     return url_mviewer, url_config
