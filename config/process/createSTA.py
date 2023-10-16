@@ -30,7 +30,11 @@
 import logging
 import sys
 from pygeoapi.process.base import BaseProcessor, ProcessorExecuteError
-sys.path.insert(1, "/usr/local/sofair-dev/config/script")
+from .setupProcess import confProcess
+sys.path.insert(1, confProcess().pathWd)
+from setup import confLoading
+config = confLoading()
+sys.path.insert(1, config.pathScript)
 import createSTA
 
 
@@ -133,8 +137,8 @@ class createSTAProcessor(BaseProcessor):
 
         if name is None:
             raise ProcessorExecuteError('Cannot process without a name')
-        
-        createSTA.main (name,description,author)       
+
+        createSTA.main (name,description,author)
 #        value = retour.strip()
         STAUrl = f'https://frost.geosas.fr/{name}/'.strip()
 
