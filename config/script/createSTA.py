@@ -20,7 +20,7 @@ import time
 #  -h, --host=HOTE nom d'hôte du serveur de la base de données ou répertoire
 #                  de la socket (par défaut : /var/run/postgresql)
 #  -p, --port=PORT port du serveur de la base de données (par défaut :
-#                  « 5432 »)
+#                  « 5433 »)
 #  -U, --username=NOM
 #                  nom d'utilisateur de la base de données (par défaut :
 #                  « squivid »)
@@ -40,7 +40,7 @@ parser.add_option("-p", "--port", dest="port",
                   help="Port du serveur de la base de données (par défaut :« 5433 »)", type="str")
 parser.add_option("-u", "--username", dest="username",
                   default="sensorthings",
-                  help="Nom d'utilisateur de la base de données (par défaut :« squivid »)", type="str")
+                  help="Nom d'utilisateur de la base de données (par défaut :«sensorthings»)", type="str")
 parser.add_option("-w", "--password", dest="password",
                   default="sensorthings29",
                   help="Mot de passe", type="str")
@@ -145,15 +145,26 @@ def deploy_tomcat_war (i) :
     print(result.stderr)
 
 def update_db (i):
-    t=15
+
+    service_OK = False
+    t = 2
+    tmax = 30
     print ("wait "+str(t)+" sec...")
-    time.sleep(t)
     url = "https://frost.geosas.fr/"+i+"/DatabaseStatus" 
     print (url)
-    myobj = {'somekey': 'somevalue'}
-    mydata = {'doupdate': 'Do+Update'}
-    x = requests.post(url, data = mydata)
-    print(x.text)
+    r = range (0,tmax,t)
+    for i in r:
+        time.sleep (t)
+        x = requests.get (url)
+        if x.status_code == 200:
+            print (url + " answer after " + str(i) + " sec")
+            service_OK = True
+            mydata = {'doupdate': 'Do+Update'}
+            x = requests.post(url, data = mydata)
+            print(x.text)
+            break
+        print (url + " don't answer after " + str(i) +" sec")
+    return service_OK
 
 if __name__ == "__main__":
     connect_db("postgres")
