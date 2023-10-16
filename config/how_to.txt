@@ -31,3 +31,6 @@ export PYGEOAPI_CONFIG=/usr/local/sofair-dev/config/sofair-config.yml
 export PYGEOAPI_OPENAPI=/usr/local/sofair-dev/config/sofair-openapi.yml
 
 pygeoapi openapi generate $PYGEOAPI_CONFIG > $PYGEOAPI_OPENAPI
+
+#déploiement en local
+renommer sofair.wsgi en sofair.py   et FLASK_APP=sofair.py flask run (http://localhost:5000/)
