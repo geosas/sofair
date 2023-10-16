@@ -10,7 +10,7 @@ import os
 import requests
 import logging
 from optparse import OptionParser
-from database import loadInstancesFile, writeInstancesFile
+from database import loadInstances, updateInstance
 
 parser = OptionParser()
 parser.add_option("-f", "--instancesFile", dest="instancesFile",
@@ -86,7 +86,7 @@ Actualize the dict {'nb_things, 'nb_observedProperties','nb_observations'} for a
 """
     for i in baseJsonST:
         i2=getCount(i["url"])
-        writeInstancesFile(i["url"],i2)
+        updateInstance(i["url"],i2)
 
 def actualizeCountForOneInstance (url) :
     """
@@ -95,11 +95,13 @@ Actualize the dict {'nb_things, 'nb_observedProperties','nb_observations'} for a
 """
     if url != None :
         i=getCount(url)
-        writeInstancesFile(url,i)
+        logging.info ("--- %s ---", url)
+        logging.info ("--- %s ---", i)
+        updateInstance(url,i)
 
 # main
 try:
-    baseJsonST = loadInstancesFile()
+    baseJsonST = loadInstances()
     if allInstances == True:
        actualizeCountForAllInstances ()
     else :

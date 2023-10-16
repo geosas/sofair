@@ -14,6 +14,7 @@ from optparse import OptionParser
 from subprocess import call
 import requests
 import time
+from database import createInstance
 
 
 #Options de connexion :
@@ -80,7 +81,10 @@ if verbose == True:
 
 # define a function that handles and parses psycopg2 exceptions
 
-def main (name,description,author) :
+def main (name,title,abstract,author,email) :
+    url = "https://frost.geosas.fr/"+name+"/v1.0/"
+    instance = {"name": name, "url": url, "title": title, "abstract": abstract, "author": author, "email": email, "feeder": "", "configuration": "false",
+                "data": "false", "md_layer": "","md_service": "", "viewer": "", "nb_things": 0, "nb_observedProperties": 0, "nb_observations": 0}
     database = "FROST"+name
     connect_db("postgres")
     create_db(database)
@@ -91,7 +95,8 @@ def main (name,description,author) :
     config_frost_dir(name)
     deploy_tomcat_war (name)
     update_db(name)
-    
+    createInstance (instance)
+
 def connect_db (db) :
     global conn
     global cursor
@@ -145,11 +150,10 @@ def deploy_tomcat_war (i) :
     print(result.stderr)
 
 def update_db (i):
-
     service_OK = False
     t = 2
     tmax = 30
-    print ("wait "+str(t)+" sec...")
+    print ("wait "+str(t)+" sec max bye loop of " + str(t))
     url = "https://frost.geosas.fr/"+i+"/DatabaseStatus" 
     print (url)
     r = range (0,tmax,t)

@@ -49,7 +49,7 @@
             "viewer": "https://geosas.fr/mviewer-test/?config=/apps/rennesmetro/config2.xml",
             "nb_things": 12,
             "nb_observedProperties": 7,
-            "nb_observations": 736332
+            "nb_observations": 736608
         },
         {
             "name": "agri4cast",
@@ -219,7 +219,7 @@
             "viewer": "",
             "nb_things": 1,
             "nb_observedProperties": 3,
-            "nb_observations": 4336
+            "nb_observations": 4357
         },
         {
             "name": "hubeau",
@@ -254,6 +254,23 @@
             "nb_things": 18478,
             "nb_observedProperties": 1874,
             "nb_observations": 136345208
+        },
+        {
+            "name": "soir",
+            "url": "https://frost.geosas.fr/soir/v1.0/",
+            "title": "soir",
+            "abstract": "soir",
+            "author": "soir",
+            "email": "soir",
+            "feeder": "",
+            "configuration": "false",
+            "data": "false",
+            "md_layer": "",
+            "md_service": "",
+            "viewer": "",
+            "nb_things": 0,
+            "nb_observedProperties": 0,
+            "nb_observations": 0
         }
     ]
 }

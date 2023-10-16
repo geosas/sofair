@@ -21,13 +21,13 @@ config = confLoading()
 
 instancesFile = confLoading().pathStatic+"json/STAInstances.json"
 
-def loadInstancesFile () :
+def loadInstances () :
     with open(instancesFile, encoding='utf-8') as json_src: 
         baseJsonST = json.load(json_src)
     return baseJsonST['instances']
 
  
-def writeInstancesFile (url,instance) :
+def updateInstance (url,instance) :
     """
 write the instanceFile by changing the key/value in "instance" for the "url" input.
 
@@ -36,6 +36,7 @@ url      - STA service URL . e.g. https://sensorthings.geosas.fr/rennesmetro/v1.
 instance - dict containing the key/val to change and save in the instancesFile 
   
 """
+    logging.info ("--- %s ---", url)
     with open(instancesFile, encoding='utf-8') as json_src: 
         baseJsonST = json.load(json_src)
     baseJsonST = baseJsonST['instances']    
@@ -49,3 +50,20 @@ instance - dict containing the key/val to change and save in the instancesFile
             json_object = json.dumps(staInstances, indent=4)
             with open(instancesFile, "w") as outfile:
                 outfile.write(json_object)           
+
+def createInstance (instance) :
+    """
+create a new STA instance in the instanceFile.
+
+Arguments:
+instance - dict containing the key/val of the new STA instance and save in the instancesFile 
+  
+"""
+    with open(instancesFile, encoding='utf-8') as json_src: 
+        baseJsonST = json.load(json_src)
+    baseJsonST = baseJsonST['instances']    
+    baseJsonST.append(instance)
+    staInstances = {"instances":baseJsonST} 
+    json_object = json.dumps(staInstances, indent=4)
+    with open(instancesFile, "w") as outfile:
+        outfile.write(json_object)           

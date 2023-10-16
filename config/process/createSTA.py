@@ -62,37 +62,59 @@ PROCESS_METADATA = {
     }],
     'inputs': {
         'name': {
-            'title': 'Nom',
-            'description': 'L\'identifiant de votre instance sensorthings sans accent, ni espace ',
+            'title': 'name',
+            'description': 'STA Id',
             'schema': {
                 'type': 'string'
             },
             'minOccurs': 1,
             'maxOccurs': 1,
             'metadata': None,  # TODO how to use?
-            'keywords': ['identifiant', 'nom']
+            'keywords': ['identifiant', 'id']
         },
-        'description': {
-            'title': 'Description',
-            'description': 'Description de votre instance sensorthings sans accent, ni espace ',
+        'title': {
+            'title': 'title',
+            'description': 'STA name',
             'schema': {
                 'type': 'string'
             },
             'minOccurs': 1,
             'maxOccurs': 1,
             'metadata': None,  # TODO how to use?
-            'keywords': ['description', 'résumé']
+            'keywords': ['title']
+        },
+        'abstract': {
+            'title': 'abstract',
+            'description': 'STA description',
+            'schema': {
+                'type': 'string'
+            },
+            'minOccurs': 0,
+            'maxOccurs': 1,
+            'metadata': None,  # TODO how to use?
+            'keywords': ['abstract', 'résumé']
         },
         'author': {
-            'title': 'Auteur',
-            'description': 'Nom de la personne qui crée l\'instance',
+            'title': 'author',
+            'description': 'STA creator name',
             'schema': {
                 'type': 'string'
             },
             'minOccurs': 0,
             'maxOccurs': 1,
             'metadata': None,
-            'keywords': ['nom']
+            'keywords': ['author','name']
+        },
+        'email': {
+            'title': 'email',
+            'description': 'STA creator email',
+            'schema': {
+                'type': 'string'
+            },
+            'minOccurs': 0,
+            'maxOccurs': 1,
+            'metadata': None,
+            'keywords': ['email']
         }
     },
     'outputs': {
@@ -107,7 +129,7 @@ PROCESS_METADATA = {
     'example': {
         'inputs': {
             'name': 'agrhys',
-            'description': 'Observatoire de recherche en environnement AgrHyS',
+            'title': 'Observatoire de recherche en environnement AgrHyS',
             'author': 'Christophe Geneste'
         }
     }
@@ -132,13 +154,15 @@ class createSTAProcessor(BaseProcessor):
 
         mimetype = 'application/json'
         name = data.get('name')
-        description = data.get('description')
+        title = data.get('title')
+        abstract = data.get('abstract')
         author = data.get('author')
+        email = data.get('email')
 
         if name is None:
             raise ProcessorExecuteError('Cannot process without a name')
-
-        createSTA.main (name,description,author)
+        
+        createSTA.main (name,title,abstract,author,email)       
 #        value = retour.strip()
         STAUrl = f'https://frost.geosas.fr/{name}/'.strip()
 
