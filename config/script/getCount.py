@@ -48,7 +48,10 @@ url  – STA service URL to query. e.g. https://sensorthings.geosas.fr/rennesmet
     try:
         r=requests.get(url+"/Things?$count=true")
         r.raise_for_status()
-        instance["nb_things"]=int(r.json()['@iot.count'])
+        if '@iot.count' in r.json():
+            instance["nb_things"]=int(r.json()['@iot.count'])
+        else:
+            instance["nb_things"]=0
     except requests.exceptions.HTTPError as e:
         logging.error (e.response.text)
 
@@ -56,7 +59,10 @@ url  – STA service URL to query. e.g. https://sensorthings.geosas.fr/rennesmet
     try:
         r=requests.get(url+"/ObservedProperties?$count=true")
         r.raise_for_status()
-        instance["nb_observedProperties"]=int(r.json()['@iot.count'])
+        if '@iot.count' in r.json():
+            instance["nb_observedProperties"]=int(r.json()['@iot.count'])
+        else:
+            instance["nb_observedProperties"]=0
     except requests.exceptions.HTTPError as e:
         logging.error (e.response.text)
 
@@ -64,10 +70,13 @@ url  – STA service URL to query. e.g. https://sensorthings.geosas.fr/rennesmet
     try:
         r=requests.get(url+"/Observations?$count=true")
         r.raise_for_status()
-        instance["nb_observations"]=int(r.json()['@iot.count'])
+        if '@iot.count' in r.json():
+            instance["nb_observations"]=int(r.json()['@iot.count'])
+        else:
+            instance["nb_observations"]=0
     except requests.exceptions.HTTPError as e:
         logging.error (e.response.text)    
-        
+    logging.info (instance)
     return instance       
 
 def actualizeCountForAllInstances () :
