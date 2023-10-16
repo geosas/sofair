@@ -8,3 +8,6 @@ psycopg2
 xmltodict
 openpyxl
 xlrd
+plotly
+pathlib2
+Flask
